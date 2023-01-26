@@ -1,0 +1,26 @@
+--- setup.sh	2022-05-23 21:31:37.000000000 +0200
++++ setup.sh	2022-05-23 21:34:26.000000000 +0200
+@@ -7,22 +7,8 @@
+ 
+ # supported tag and download target
+ tag="v2.3.0"
+-target="https://gitlab.com/unigespc/palabos/-/archive/${tag}/palabos-${tag}.tar.gz"
+-archive="palabos.tar.gz"
+ 
+-# clean old palabos
+-if [ -d "palabos" ]; then
+-  rm -r ./palabos
+-fi
+-
+-# obtain new tag
+-if [ ! -e "${archive}" ]; then
+-  wget -qO "${archive}" "${target}" || { echo "Error Downloading palabos, exiting ..."; exit 1;}
+-fi
+-
+-# extract source
+-tar -xzf "${archive}" && rm "${archive}"
+-mv palabos-* palabos
++mv "palabos-${tag}" palabos
+ 
+ # apply the patch
+ (
