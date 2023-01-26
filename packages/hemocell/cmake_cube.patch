@@ -1,0 +1,50 @@
+diff --git a/examples/cube/CMakeLists.txt b/examples/cube/CMakeLists.txt
+index 34fda45..241c255 100644
+--- a/examples/cube/CMakeLists.txt
++++ b/examples/cube/CMakeLists.txt
+@@ -1,8 +1,15 @@
+ # executable will have the same name as its directory
+ get_filename_component(EXEC_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+ 
+-# write the resulting executable in the _current_ directory
+-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
++# set variables for paths to be created
++set(CMAKE_CUBE_BIN ${CMAKE_CURRENT_SOURCE_DIR}/bin)
++set(CMAKE_CUBE_CONFIG ${CMAKE_CURRENT_SOURCE_DIR}/config)
++
++# write the resulting executable in the bin directory
++set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CUBE_BIN})
++
++# set variable for hemo root dir
++set(CMAKE_ROOT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../)
+ 
+ # add executable from source files in current directory assuming
+ # to add more source files, manually register them using `add_executable`
+@@ -12,3 +19,26 @@ add_executable(${EXEC_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/${MAIN}.cpp")
+ # link the executable to `hemocell` and `HDF5` dependencies
+ target_link_libraries(${EXEC_NAME} ${PROJECT_NAME})
+ target_link_libraries(${EXEC_NAME} ${HDF5_C_HL_LIBRARIES} ${HDF5_LIBRARIES})
++
++# create required directories for file copying 
++execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CUBE_BIN})
++execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CUBE_CONFIG})
++
++# copy the files every time cmake command is invoked
++add_custom_target(copy_preprocess ALL
++    COMMAND ${CMAKE_COMMAND} -E copy_directory
++    ${CMAKE_CURRENT_SOURCE_DIR}/preprocess
++    ${CMAKE_CURRENT_SOURCE_DIR}/bin
++)
++
++add_custom_target(copy_config ALL
++    COMMAND ${CMAKE_COMMAND} -E copy_directory
++    ${CMAKE_ROOT_DIRECTORY}/config
++    ${CMAKE_CURRENT_SOURCE_DIR}/config
++)
++
++add_dependencies(cube copy_preprocess)
++add_dependencies(cube copy_config)
++
++#configure_file(RBC.xml ${CMAKE_CURRENT_SOURCE_DIR} COPYONLY)  // Not sure if these commands are useful
++#configure_file(README.md ${CMAKE_CURRENT_SOURCE_DIR} COPYONLY)
+\ No newline at end of file
