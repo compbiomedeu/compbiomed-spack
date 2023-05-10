@@ -6,7 +6,7 @@
 from spack import *
 
 
-class Ctemplate(Package):
+class Ctemplate(AutotoolsPackage):
     """The C++ CTemplate system - This library provides an easy to use and
     lightning fast text templating system to use with C++ programs.
 
@@ -29,9 +29,12 @@ class Ctemplate(Package):
     depends_on('autoconf', type='build')
     depends_on('automake', type='build')
     depends_on('libtool',  type='build')
+    
+    depends_on('python@:2', type='build', when='@:2.3')
+    depends_on('python@3:', type='build', when='@2.4:')
 
     def autoreconf(self, spec, prefix):
-        which('bash')('autogen.sh')
+        which('bash')('autoreconf --force --install --warnings all,no-obsolete')
 
     def install(self, spec, prefix):
         configure("--prefix=" + prefix)
