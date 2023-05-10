@@ -16,7 +16,7 @@ The target audiences for Spack are:
 - developers interested in OS-indepenent, consistent software stacks for their development
 - new users interested in minimal installation procedures
 
-More information on Spack can be found in the [official documentation]().
+More information on Spack can be found in the [official documentation](https://spack.readthedocs.io/en/latest/index.html).
 
 ## Prerequisities
 
@@ -25,17 +25,23 @@ More information on Spack can be found in the [official documentation]().
 Assuming you have spack installed and loaded in your session, all you need to do is:
 
 ```
-git clone <link>
+git clone https://github.com/compbiomedeu/compbiomed-spack.git
 spack repo add compbiomed-spack
 ```
 
 ## Installing CompBioMed applications
 
-You are now able to install CompBioMed related software. For example launch a test
-simulation using:
+You are now able to install CompBioMed software, including:
+
+* HemePure
+* HemoCell (TODO)
+* Palabos (TODO)
+
+For example to install and load Hemepure (CPU-version) you would do:
 
 ```
-spack install <name>
+$ spack install hemepure
+$ module load hemepure
 ```
 
 Spack requires internet access to fetch tarballs of dependencies. If you are
