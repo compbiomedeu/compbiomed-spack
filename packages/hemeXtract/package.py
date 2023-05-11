@@ -15,7 +15,8 @@ class Hemextract(MakefilePackage):
     # patch the Makefile
     patch('hemeXtract.patch')
 
-    build_targets = ['CC=cc','CXXFLAGS=cxxflags']
+    build_targets = ['CC=cc']
+    flag_handler = build_system_flags
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
