@@ -2,7 +2,7 @@
 
 from spack import *
 
-class Hemextract(MakefilePackage):
+class HemeXtract(MakefilePackage):
 
     homepage = "https://github.com/UCL-CCS/hemeXtract"
     url      = "https://github.com/UCL-CCS/hemeXtract"
@@ -11,22 +11,19 @@ class Hemextract(MakefilePackage):
     version('master', branch='master')
 
     depends_on('libtirpc')
+    depends_on('argp-standalone')
+    depends_on('python@2:',type='run')
 
     # patch the Makefile
     patch('hemeXtract.patch')
 
     build_targets = ['CC=cc']
+
+    # inject flags as make variables, i.e `make CXXFLAGS=<cxxflags>`
     flag_handler = build_system_flags
 
+    # installation step is missing in the Makefile
     def install(self, spec, prefix):
         mkdir(prefix.bin)
         install('hemeXtract', prefix.bin)
 
-#    depends_on('argp-standalone')
-
-
-"""
-class Hemepuretools(Package):
-    url = 
-    depends_on('python@3:')
-"""
