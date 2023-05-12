@@ -33,8 +33,7 @@ class Ctemplate(AutotoolsPackage):
     depends_on('python@:2', type='build', when='@:2.3')
     depends_on('python@3:', type='build', when='@2.4:')
 
-    def autoreconf(self, spec, prefix):
-        which('bash')('autoreconf --force --install --warnings all,no-obsolete')
+    autoreconf_extra_args = ["--warnings","all,no-obsolete"]
 
     def install(self, spec, prefix):
         configure("--prefix=" + prefix)
