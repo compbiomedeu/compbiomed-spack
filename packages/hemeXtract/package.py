@@ -2,7 +2,7 @@
 
 from spack import *
 
-class HemeXtract(MakefilePackage):
+class Hemextract(MakefilePackage):
 
     homepage = "https://github.com/UCL-CCS/hemeXtract"
     url      = "https://github.com/UCL-CCS/hemeXtract"
