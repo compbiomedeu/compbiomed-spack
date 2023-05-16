@@ -11,7 +11,6 @@ class Hemextract(MakefilePackage):
     version('master', branch='master')
 
     depends_on('libtirpc')
-    depends_on('argp-standalone')
     depends_on('python@2:',type='run')
 
     # patch the Makefile
