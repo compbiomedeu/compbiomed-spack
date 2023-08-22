@@ -13,7 +13,7 @@ class Hemepure(CMakePackage):
     remodelling in retinas , but is now being applied to simulating the fully
     coupled human arterial and venous trees.
 
-    HemePure is a optimized verion of HemeLB with improved memory, compilation 
+    HemePure is a optimized verion of HemeLB with improved memory, compilation
     and scaling"""
 
     homepage = "https://github.com/UCL-CCS/HemePure"
@@ -27,16 +27,27 @@ class Hemepure(CMakePackage):
     variant('tracer', default=True, description='Use particles as tracers')
     variant('simd', default='auto', description='Use SIMD instrinsics',
             values=('sse3', 'avx2', 'avx512', 'auto', 'False'))
-    variant('velocity_weight', default=False, 
+    variant('velocity_weight', default=False,
             description='Use velocity weights file')
     variant('gmyplus', default=False, description='Use GMY+ format')
-    variant('mpi_call', default=False, 
+    variant('mpi_call', default=False,
             description='Use standard MPI functions when reading blocks')
-    variant('mpi_win', default=False, 
+    variant('mpi_win', default=False,
             description='Use MPI windowing to help load large domains')
-    variant('big_mpi', default=False, 
+    variant('big_mpi', default=False,
             description='Use MPI windowing to help load large domains')
     variant('parmetis', default=False, description='Use ParMETIS')
+
+    variant('wall_boundary', default='BFL', description='boundary conditions to be used at the walls',
+            values=('BFL','GZS','SIMPLEBOUNCEBACK','JUNKYANG'), multi=False)
+    variant('inlet_boundary', default='NASHZEROTHORDERPRESSUREIOLET', description='boundary conditions to be used at the inlet',
+            values=('NASHZEROTHORDERPRESSUREIOLET', 'LADDIOLET'), multi=False)
+    variant('outlet_boundary', default='NASHZEROTHORDERPRESSUREIOLET', description='boundary conditions to be used at the outlets',
+            values=('NASHZEROTHORDERPRESSUREIOLET', 'LADDIOLET'), multi=False)
+    variant('wall_inlet_boundary', default='NASHZEROTHORDERPRESSUREBFL', description='boundary conditions to be used at corners between walls and inlets',
+            values=('NASHZEROTHORDERPRESSURESBB','NASHZEROTHORDERPRESSUREBFL','LADDIOLETSBB','LADDIOLETBFL'), multi=False)
+    variant('wall_outlet_boundary', default='NASHZEROTHORDERPRESSUREBFL', description='boundary conditions to be used at corners between walls and outlets',
+            values=('NASHZEROTHORDERPRESSURESBB','NASHZEROTHORDERPRESSUREBFL','LADDIOLETSBB','LADDIOLETBFL'), multi=False)
 
     depends_on('mpi')
     depends_on('cmake@3.15:')
@@ -113,6 +124,12 @@ class Hemepure(CMakePackage):
                     if feature in target:
                         args.append("-DHEMELB_USE_%s=ON" %flag)
                         break
+
+        args.append(self.define_from_variant('HEMELB_WALL_BOUNDARY', 'wall_boundary'))
+        args.append(self.define_from_variant('HEMELB_INLET_BOUNDARY', 'inlet_boundary'))
+        args.append(self.define_from_variant('HEMELB_OUTLET_BOUNDARY', 'outlet_boundary'))
+        args.append(self.define_from_variant('HEMELB_WALL_INLET_BOUNDARY', 'wall_inlet_boundary'))
+        args.append(self.define_from_variant('HEMELB_WALL_OUTLET_BOUNDARY', 'wall_outlet_boundary'))
 
         #if the target does not belong to any of aboved cases, no SIMD intrinsics support
         return args
