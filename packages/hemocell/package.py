@@ -20,6 +20,7 @@ class Hemocell(CMakePackage):
     # maintainers = ['ivanp']
 
     version('master', branch='master')
+    version('export_cube', branch='export_cube')
     
     version('2.6',commit='2546b20555ede99c496423c0db0b6bac17579752',preferred=True)
 
@@ -84,7 +85,8 @@ class Hemocell(CMakePackage):
 
     def cmake_args(self):
         args = []
-        args.append(self.define('BUILD_TESTING',False))            
+        args.append(self.define('BUILD_TESTING',False))
+        args.append(self.define('HEMOCELL_INSTALL_CUBE',True))
         return args
 
     def build(self, spec, prefix):
