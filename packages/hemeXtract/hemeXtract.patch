@@ -15,10 +15,10 @@ index 22ff3f5..183c0bb 100644
 +SRC=hemeXtract.cc
 +
 +hemeXtract: $(SRC)
-+	$(CXX) $(CXXFLAGS) -o $@ $<
++	$(CXX) $(CXXFLAGS) -o $@ $< -ltirpc
 +
 +debug: $(SRC)
-+	$(CXX) $(CXXFLAGS_DEBUG) -o $@ $<
++	$(CXX) $(CXXFLAGS_DEBUG) -o $@ $< -ltirpc
 +
 +.phony: clean
 +clean:
